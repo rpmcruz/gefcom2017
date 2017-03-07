@@ -1,6 +1,6 @@
 # GEFCOM 2017 Report
 
-by Ivo Silva and Ricardo Cruz
+by Ivo Silva, Ricardo Cruz and Carla Gonçalves
 
 ## Competition
 
@@ -8,24 +8,26 @@ The goal was to predict **electricity demand** for several **regions** in New En
 
 The metric is [the pinball function](https://www.lokad.com/pinball-loss-function-definition) divided by a baseline prediction.
 
-Rules: http://blog.drhongtao.com/2016/10/instructions-for-gefcom2017-qualifying-match.html
+Rules: [http://blog.drhongtao.com/2016/10/instructions-for-gefcom2017-qualifying-match.html](http://blog.drhongtao.com/2016/10/instructions-for-gefcom2017-qualifying-match.html)
 
 ## Data
 
 * the granularity of the observations was in hours
 * several variables were provided but only **demand** and **temperature** variables could be used for the defined-data, plus information on US federal holidays
 
-## Feature Extraction
+## Feature Engineering
 
 Several experiments were performed. In the end, the following features were used:
 
 * $sin(\frac{2\pi}{24}h)$ and $cos(\frac{2\pi}{24}h)$ to make hour rotation invariant
 * one-hot encoded weekday
 * the absolute distance in days to several days of the year: 04/25, 07/20, 10/31, to thanksgiven, and to every day 15 of each month
+* distance to the hottest and the colest days of the year (selected by analazing Dry-Bulb timeseries)
 * the absolute distance to the closest holiday
 * whether the hour is in daylight-saving time
 * whether it is a working day or weekend, or if a "night" hour (between midnight and 6am), and whether it is adjacent to an holiday
 * whether it is one of four selected "special" holidays, such as Christmas
+* whether it is a holiday neighbour (day before or after)
 
 Features were selected according to feature importance computed from the gradient boosting trees model. Some cross validation was also used for feature selection.
 
